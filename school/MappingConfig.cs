@@ -11,6 +11,7 @@ namespace School_API
             CreateMap<ApplicationUser, UserDTO>().ReverseMap();
             CreateMap<LoginModel, Token>().ReverseMap();
             CreateMap<ApplicationUser, Token>().ReverseMap();
+            CreateMap<ApplicationUser, UserEditDTO>().ReverseMap();
 
         }
     }
