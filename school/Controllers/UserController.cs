@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Dapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -7,6 +8,8 @@ using School_Data.DTOs;
 using School_Data.Helpers;
 using School_Data.Models;
 using System.Data;
+using System.Net;
+using System.Net.NetworkInformation;
 
 namespace School_API.Controllers
 {
@@ -49,17 +52,50 @@ namespace School_API.Controllers
             if(result == null)
             {
                 _resp.IsValid = false;
-                _resp.Message = "Hubo un error en el resultado.";
-                _resp.StatusCode = System.Net.HttpStatusCode.BadRequest;
+                _resp.Message = "Hubo un error o no hay datos en el resultado.";
+                _resp.StatusCode = HttpStatusCode.BadRequest;
             }
             else
             {
-
+                _resp.Result = result;
+                _resp.Message = "Consulta realizada exitosamente.";
+                _resp.StatusCode = HttpStatusCode.OK;
             }
 
-            _resp.Result = result;
-            _resp.Message = "Consulta realizada exitosamente.";
-            _resp.StatusCode = System.Net.HttpStatusCode.OK;
+            return _resp;
+        }
+
+        [HttpGet("id")]
+        public async Task<APIResponse> Get(string Id)
+        {
+            if (Id.IsNullOrEmpty())
+            {
+                _logger.LogError("El parametro no puede estar vacio.");
+
+                _resp.IsValid = false;
+                _resp.Message = "El parametro no puede estar vacio.";
+                _resp.StatusCode = HttpStatusCode.BadRequest;
+                return _resp;
+            }
+
+            var parameters = new DynamicParameters();
+            var query = @"SELECT * FROM AspNetUsers where Id = @Id";
+
+            parameters.Add("@Id", Id);            
+            var result = await _paged.SentenceUnique<ApplicationUser>(query, parameters);
+
+            if (result == null)
+            {
+                _resp.IsValid = false;
+                _resp.Message = "Hubo un error o no hay datos en el resultado";
+                _resp.StatusCode = HttpStatusCode.BadRequest;
+            }
+            else
+            {
+                _resp.Result = result;
+                _resp.Message = "Consulta realizada exitosamente.";
+                _resp.StatusCode =HttpStatusCode.OK;
+            }
 
             return _resp;
         }

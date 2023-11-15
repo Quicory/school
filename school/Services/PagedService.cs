@@ -61,6 +61,17 @@ namespace School_API.Services
             return results;
         }
 
+        public async Task<T> SentenceUnique<T>(string query, DynamicParameters parameters) where T : class
+        { 
+            using (var conn = new SqlConnection(_connectionString))
+            {                
+                var result = await conn.QueryFirstOrDefaultAsync<T>(query, parameters);
+
+                return result;
+            };
+
+        }
+
         private bool HasProperty<T>(string FieldName, T obj) where T : class 
         {
             foreach (var item in obj.GetType().GetProperties())
