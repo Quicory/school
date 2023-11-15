@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Runtime.Serialization;
+using System.Xml.Serialization;
 
 namespace School_Data.DTOs
 {
@@ -12,6 +9,7 @@ namespace School_Data.DTOs
         public int PageSize { get; set; } = 10;
         public string? FieldOrder { get; set; }
         public bool IsAsc { get; set; } = true;
+        public string? FilterFieldName { get; set; }
         public string? Filter { get; set; }
     }
 }
