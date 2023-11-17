@@ -1,11 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using School_API.Services;
-using School_Data.DTOs;
+using School_Data.Helpers;
 using School_Data.Models;
-using System.Data;
 using System.Net;
 
 namespace School_API.Controllers

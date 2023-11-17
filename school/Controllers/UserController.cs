@@ -1,6 +1,4 @@
 ﻿using Dapper;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -8,9 +6,7 @@ using School_API.Services;
 using School_Data.DTOs;
 using School_Data.Helpers;
 using School_Data.Models;
-using System.Data;
 using System.Net;
-using System.Net.NetworkInformation;
 
 namespace School_API.Controllers
 {

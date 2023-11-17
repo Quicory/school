@@ -1,11 +1,9 @@
-﻿
-
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace School_Data.Models
 {
-    public class Subjects
+    public class Subject
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -17,3 +15,4 @@ namespace School_Data.Models
         public DateTime update_at { get; set; } = DateTime.Now;
     }
 }
+
