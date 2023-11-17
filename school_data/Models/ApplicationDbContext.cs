@@ -12,7 +12,7 @@ namespace School_Data.Models
 
         }
 
-        //public DbSet<Subject> Subjects { get; set; }
+        public DbSet<Subject> Subjects { get; set; }
         
         protected override void OnModelCreating(ModelBuilder builder)
         {
