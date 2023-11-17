@@ -78,7 +78,7 @@ namespace School_API.Controllers
         /// </summary>
         /// <param name="Id">Identificación del usuario</param>
         /// <returns>Retorna los datos de un usuario, si es exitoso o no.</returns>
-        [HttpGet("id")]
+        [HttpGet("id:guid")]
         public async Task<APIResponse> Get(string Id)
         {
             if (Id.IsNullOrEmpty())
