@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using School_API.Services;
 using School_Data.DTOs;
 using School_Data.Helpers;
@@ -16,33 +15,35 @@ namespace School_API.Controllers
     [Route("api/[controller]")]
     [ApiController]
     //[Authorize]
-    public class SubjectController : ControllerBase
+    public class TeacherController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
         private readonly ILogger<UserController> _logger;
         protected APIResponse _resp;
         private readonly IPagedService _paged;
-        //private readonly IMapper _mapper;
-        public SubjectController(ILogger<UserController> logger, IPagedService paged, ApplicationDbContext context, IMapper mapper)
+        private readonly IMapper _mapper;
+        public TeacherController(ILogger<UserController> logger, IPagedService paged, ApplicationDbContext context, IMapper mapper)
         {
             _logger = logger;
             _resp = new();
             _paged = paged;
             _context = context;
+            _mapper = mapper;
         }
 
         /// <summary>
-        /// Retorna los datos de las asignaturas en paginación.
+        /// Retorna los datos de los maestros en paginación.
         /// </summary>
         /// <param name="paging">Datos o propiedades para realizar la consulta</param>
-        /// <returns>Retorna los datos de las asignaturas, si es exitoso o no.</returns>
+        /// <returns>Retorna los datos de los maestros, si es exitoso o no.</returns>
         [HttpGet]
         public async Task<APIResponse> Get([FromQuery] PagingDTO paging)
         {
             // Search field
             paging.FilterFieldName = "Name";
-            var query = @"
-                    SELECT * FROM Subjects
+            var query = @"SELECT *, Subjects = (SELECT S.* FROM Subjects S inner join SubjectTeacher ST 
+						        on S.Id = ST.SubjectsId where ST.TeachersId = T.Id FOR JSON AUTO)
+                            FROM Teachers T
                     {0}
                     {1}
                     OFFSET @Offset ROWS
@@ -53,8 +54,8 @@ namespace School_API.Controllers
                     {0};
                     ";
 
-            var obj = new SubjectDTO();
-            var result = await _paged.Sentence<SubjectDTO>(query, paging, obj);
+            var obj = new TeacherDTO();
+            var result = await _paged.Sentence<TeacherDTO>(query, paging, obj);
 
             if (result == null)
             {
@@ -91,10 +92,12 @@ namespace School_API.Controllers
             }
 
             var parameters = new DynamicParameters();
-            var query = @"SELECT * FROM Subjects where Id = @Id";
+            var query = @"SELECT *, Subjects = (SELECT S.* FROM Subjects S inner join SubjectTeacher ST 
+						        on S.Id = ST.SubjectsId where ST.TeachersId = T.Id FOR JSON AUTO)
+                            FROM Teachers T where Id = @Id";
 
             parameters.Add("@Id", Id);
-            var result = await _paged.SentenceUnique<SubjectDTO>(query, parameters);
+            var result = await _paged.SentenceUnique<TeacherDTO>(query, parameters);
 
             if (result == null)
             {
@@ -112,12 +115,12 @@ namespace School_API.Controllers
             return _resp;
         }
         /// <summary>
-        /// Crear una asignatura
+        /// Crear un maestro
         /// </summary>
-        /// <param name="model">Datos de la asignatura</param>
-        /// <returns>Retorno los datos de la asignatura</returns>
+        /// <param name="model">Datos del maestro</param>
+        /// <returns>Retorno los datos del maestro</returns>
         [HttpPost]
-        public async Task<APIResponse> Create([FromBody] SubjectCreateDTO model)
+        public async Task<APIResponse> Create([FromBody] TeacherCreateDTO model )
         {
             if (!ModelState.IsValid || model == null)
             {
@@ -133,15 +136,20 @@ namespace School_API.Controllers
 
             try
             {
-                var subject = new Subject();
-                subject.Name = model.Name;
-            
-                _context.Subjects.Add(subject);
+                var obj = new Teacher();
+                obj = _mapper.Map<Teacher>(model);
+                
+                //_context.Teachers.Add(obj);
+                //foreach (var item in model.detail)
+                //{
+                //    _context
+                //}
+
 
                 await _context.SaveChangesAsync();
 
-                _resp.Message = "Asignatura creada.";
-                _resp.Result = subject;
+                _resp.Message = "Maestro creado.";
+                _resp.Result = obj;
                 _resp.StatusCode = HttpStatusCode.Created;
 
                 _logger.LogInformation(_resp.Message);
@@ -181,7 +189,7 @@ namespace School_API.Controllers
             var subject = await _context.Subjects.FirstOrDefaultAsync(x => x.Id == Id);
             if (subject == null)
             {
-                _resp.IsValid = false;                
+                _resp.IsValid = false;
                 _resp.Message = "No se ha encontrado la asignatura.";
                 _resp.StatusCode = HttpStatusCode.NotFound;
 
@@ -189,9 +197,9 @@ namespace School_API.Controllers
 
                 return _resp;
             }
-            
+
             try
-            {            
+            {
                 subject.Name = model.Name;
                 subject.update_at = DateTime.Now;
 
@@ -248,7 +256,7 @@ namespace School_API.Controllers
             }
 
             try
-            {                
+            {
                 _context.Subjects.Remove(subject);
 
                 await _context.SaveChangesAsync();

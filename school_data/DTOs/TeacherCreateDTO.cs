@@ -1,15 +1,15 @@
-﻿using System;
+﻿using School_Data.Models;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace School_Data.Models
+namespace School_Data.DTOs
 {
-    public class Teacher
+    public class TeacherCreateDTO
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
         [Required(ErrorMessage = "El nombre es requerido")]
         [StringLength(100, ErrorMessage = "El nombre debe tener al menos {0} de longitud.")]
         public string FirstName { get; set; }
@@ -21,8 +21,7 @@ namespace School_Data.Models
         public string Email { get; set; }
         [Required(ErrorMessage = "La profesión es requerida")]
         public string Profession { get; set; }
-        public DateTime? create_at { get; set; } = DateTime.Now;
-        public DateTime? update_at { get; set; } = DateTime.Now;
-        public IList<Subject> Subjects { get; set; }
+        //public List<SubjectsTeacherDTO> Subjects { get; set; } = new();
+        public List<int> detail { get; set; }
     }
 }

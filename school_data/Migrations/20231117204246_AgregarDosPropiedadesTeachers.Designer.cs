@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using School_Data.Models;
 
@@ -11,9 +12,11 @@ using School_Data.Models;
 namespace School_Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231117204246_AgregarDosPropiedadesTeachers")]
+    partial class AgregarDosPropiedadesTeachers
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -243,13 +246,13 @@ namespace School_Data.Migrations
                             Id = "a18be9c0-aa65-4af8-bd17-00bd9344e575",
                             AccessFailedCount = 0,
                             CompleteName = "Administrator",
-                            ConcurrencyStamp = "e47d6d3f-44af-4b46-b60e-195bd6c8db4d",
+                            ConcurrencyStamp = "f430a508-a6ef-4058-8764-d6af030e0c15",
                             Email = "admin@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "admin@gmail.com",
                             NormalizedUserName = "Admin",
-                            PasswordHash = "AQAAAAIAAYagAAAAEFfMrs5CrSFxH0ur+4czkK1noHwBWYR3j1f5xlbFQRcTRQTM4f446cWdyAqvqnZvMw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEGgcUgp9Ahd9noKC19bl91p22Nsk+LYkcuzWCAIPssEbMxz1D249ZUpMU6teYgrpsQ==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -318,21 +321,6 @@ namespace School_Data.Migrations
                     b.ToTable("Teachers");
                 });
 
-            modelBuilder.Entity("School_Data.Models.TeacherSubject", b =>
-                {
-                    b.Property<int>("TeacherId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SubjectId")
-                        .HasColumnType("int");
-
-                    b.HasKey("TeacherId", "SubjectId");
-
-                    b.HasIndex("SubjectId");
-
-                    b.ToTable("TeachersSubjects");
-                });
-
             modelBuilder.Entity("SubjectTeacher", b =>
                 {
                     b.Property<int>("SubjectsId")
@@ -397,25 +385,6 @@ namespace School_Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("School_Data.Models.TeacherSubject", b =>
-                {
-                    b.HasOne("School_Data.Models.Subject", "Subject")
-                        .WithMany()
-                        .HasForeignKey("SubjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("School_Data.Models.Teacher", "Teacher")
-                        .WithMany()
-                        .HasForeignKey("TeacherId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Subject");
-
-                    b.Navigation("Teacher");
                 });
 
             modelBuilder.Entity("SubjectTeacher", b =>

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Emit;
 
 namespace School_Data.Models
 {
@@ -12,12 +13,10 @@ namespace School_Data.Models
 
         }
 
-        public DbSet<Subject> Subjects { get; set; }
-        public DbSet<Teacher> Teachers { get; set; }
-
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+            // This is for to insert data User
             // any unique string id
             const string ADMIN_ID = "a18be9c0-aa65-4af8-bd17-00bd9344e575";
             const string ROLE_ID = "ad376a8f-9eab-4bb9-9fca-30b01540f445";
@@ -48,6 +47,13 @@ namespace School_Data.Models
                 RoleId = ROLE_ID,
                 UserId = ADMIN_ID
             });
+
+            // This relationships Teacher and Subjects.
+            builder.Entity<TeacherSubject>().HasKey(ts => new { ts.TeacherId, ts.SubjectId });
         }
+
+        public DbSet<Subject> Subjects { get; set; }
+        public DbSet<Teacher> Teachers { get; set; }
+        public DbSet<TeacherSubject> TeachersSubjects { get; set; }
     }
 }
