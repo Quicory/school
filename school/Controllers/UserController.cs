@@ -16,7 +16,7 @@ namespace School_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "Admin")]
     public class UserController : ControllerBase
     {
         private readonly ApplicationDbContext _context;               
@@ -42,7 +42,9 @@ namespace School_API.Controllers
             // Search field
             paging.FilterFieldName = "CompleteName";
             var query = @"
-                    SELECT * FROM AspNetUsers
+                    SELECT U.*, R.Name as RolName FROM AspNetUsers U inner join AspNetUserRoles UR
+	                    on U.Id = UR.UserId inner join AspNetRoles R
+		                    on UR.RoleId = R.Id
                     {0}
                     {1}
                     OFFSET @Offset ROWS
@@ -53,8 +55,8 @@ namespace School_API.Controllers
                     {0};
                     ";
 
-            var obj = new ApplicationUser();
-            var result = await _paged.Sentence<ApplicationUser>(query, paging, obj);
+            var obj = new ApplicationUserDTO();
+            var result = await _paged.Sentence<ApplicationUserDTO>(query, paging, obj);
 
             if(result == null)
             {
@@ -90,7 +92,9 @@ namespace School_API.Controllers
             }
 
             var parameters = new DynamicParameters();
-            var query = @"SELECT * FROM AspNetUsers where Id = @Id";
+            var query = @"SELECT U.*, R.Name as RolName FROM AspNetUsers U inner join AspNetUserRoles UR
+	                        on U.Id = UR.UserId inner join AspNetRoles R
+		                        on UR.RoleId = R.Id where U.Id = @Id";
 
             parameters.Add("@Id", Id);            
             var result = await _paged.SentenceUnique<ApplicationUser>(query, parameters);

@@ -12,5 +12,6 @@ namespace School_Data.DTOs
        
         [JsonPropertyName("completename")]
         public string CompleteName { get; set; }
+        
     }
 }

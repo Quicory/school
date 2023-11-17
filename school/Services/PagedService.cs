@@ -24,7 +24,7 @@ namespace School_API.Services
         /// <typeparam name="T">Clase de datos a generar</typeparam>
         /// <param name="query">Sentencia o instrucciones para generar los datos.</param>
         /// <param name="paging">Datos o propiedades para realizar la consulta</param>
-        /// <param name="obj">Misma clase donde esta la T generico</param>
+        /// <param name="obj">clase para retornar y buscar datos</param>
         /// <returns>Datos devueltos de la consulta y el total</returns>
         public async Task<PagedResults> Sentence<T>(string query, PagingDTO paging, T obj) where T : class 
         {
