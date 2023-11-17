@@ -15,14 +15,14 @@ namespace School_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     public class SubjectController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
         private readonly ILogger<UserController> _logger;
         protected APIResponse _resp;
         private readonly IPagedService _paged;
-        private readonly IMapper _mapper;
+        //private readonly IMapper _mapper;
         public SubjectController(ILogger<UserController> logger, IPagedService paged, ApplicationDbContext context, IMapper mapper)
         {
             _logger = logger;
@@ -142,7 +142,7 @@ namespace School_API.Controllers
 
                 _resp.Message = "Asignatura creada.";
                 _resp.Result = subject;
-                _resp.StatusCode = HttpStatusCode.OK;
+                _resp.StatusCode = HttpStatusCode.Created;
 
                 _logger.LogInformation(_resp.Message);
                 return _resp;

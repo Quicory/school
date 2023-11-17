@@ -13,7 +13,8 @@ namespace School_Data.Models
         }
 
         public DbSet<Subject> Subjects { get; set; }
-        
+        public DbSet<Teacher> Teachers { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

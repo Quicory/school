@@ -13,6 +13,7 @@ namespace School_Data.Models
         public string Name { get; set; }
         public DateTime? create_at { get; set; } = DateTime.Now;
         public DateTime? update_at { get; set; } = DateTime.Now;
+        public List<Teacher> Teachers { get; set; } = new();
     }
 }
 
