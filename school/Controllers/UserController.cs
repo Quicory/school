@@ -16,7 +16,7 @@ namespace School_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
     public class UserController : ControllerBase
     {
         private readonly ApplicationDbContext _context;               
@@ -31,7 +31,11 @@ namespace School_API.Controllers
             _paged = paged;
             _context = context;
         }
-
+        /// <summary>
+        /// Retorna los datos del usuario en paginación.
+        /// </summary>
+        /// <param name="paging">Datos o propiedades para realizar la consulta</param>
+        /// <returns>Retorna los datos del usuario, si es exitoso o no.</returns>
         [HttpGet]
         public async Task<APIResponse> Get([FromQuery] PagingDTO paging)
         {
@@ -67,7 +71,11 @@ namespace School_API.Controllers
 
             return _resp;
         }
-
+        /// <summary>
+        /// Retorna los datos del usuario único
+        /// </summary>
+        /// <param name="Id">Identificación del usuario</param>
+        /// <returns>Retorna los datos de un usuario, si es exitoso o no.</returns>
         [HttpGet("id")]
         public async Task<APIResponse> Get(string Id)
         {
@@ -102,6 +110,11 @@ namespace School_API.Controllers
 
             return _resp;
         }
+        /// <summary>
+        /// Actualiza los datos del usuario
+        /// </summary>
+        /// <param name="model">Datos del usuario a editar</param>
+        /// <returns>Retorno de una respuesta, si es exitosa o no.</returns>
         [HttpPut]
         public async Task<APIResponse> Update([FromBody] UserEditDTO model)
         {

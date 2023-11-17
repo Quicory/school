@@ -27,7 +27,11 @@ namespace School_API.Controllers
             _resp = new();
         }
 
-
+        /// <summary>
+        /// Sirve para acceder al API.
+        /// </summary>
+        /// <param name="model">Datos para acceder</param>
+        /// <returns>Retorno de datos sobre acceso al API.</returns>
         [HttpPost]
         [Route("login")]
         public async Task<APIResponse> Login(LoginModel model)
@@ -58,6 +62,11 @@ namespace School_API.Controllers
             }
         }
 
+        /// <summary>
+        /// Silve para registrar el usuario.
+        /// </summary>
+        /// <param name="model">Datos para registrarse</param>
+        /// <returns>Respuesta sobre datos que son aceptados o rechazados</returns>
         [HttpPost]
         [Route("registeration")]
         [Authorize(Roles = "Admin")]

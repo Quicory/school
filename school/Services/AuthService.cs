@@ -26,6 +26,12 @@ namespace School_API.Services
             _mapper = mapper;
             _resp = new();
         }
+        /// <summary>
+        /// Silve para registrar el usuario con su rol.
+        /// </summary>
+        /// <param name="model">Datos del usuario a registrar</param>
+        /// <param name="role">Rol del usuario</param>
+        /// <returns>Respuesta sobre datos que son aceptados o rechazados</returns>
         public async Task<APIResponse> Registeration(RegistrationModel model, string role)
         {
             var userExists = await userManager.FindByNameAsync(model.Username);
@@ -63,7 +69,11 @@ namespace School_API.Services
             _resp.StatusCode = HttpStatusCode.Created;            
             return _resp;
         }
-
+        /// <summary>
+        /// Es utilizado para acceder a la API.
+        /// </summary>
+        /// <param name="model">Datos del usuario a acceder</param>
+        /// <returns>Respuesta sobre datos que son aceptados o rechazados</returns>
         public async Task<APIResponse> Login(LoginModel model)
         {
             var user = await userManager.FindByNameAsync(model.Username);
@@ -104,8 +114,11 @@ namespace School_API.Services
             _resp.Result = token;
             return _resp;
         }
-
-
+        /// <summary>
+        /// Sirve para generar el token de acceso.
+        /// </summary>
+        /// <param name="claims">Listas de claim para generar el token</param>
+        /// <returns>Retorno del token generado</returns>
         private string GenerateToken(IEnumerable<Claim> claims)
         {
             var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWTKey:Secret"]));

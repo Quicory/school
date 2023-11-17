@@ -18,7 +18,14 @@ namespace School_API.Services
         {     
             _connectionString = config.GetConnectionString("SchoolConnetion");
         }
-
+        /// <summary>
+        /// Sirve para retornar datos de la clase, con paginación y total de registros.
+        /// </summary>
+        /// <typeparam name="T">Clase de datos a generar</typeparam>
+        /// <param name="query">Sentencia o instrucciones para generar los datos.</param>
+        /// <param name="paging">Datos o propiedades para realizar la consulta</param>
+        /// <param name="obj">Misma clase donde esta la T generico</param>
+        /// <returns>Datos devueltos de la consulta y el total</returns>
         public async Task<PagedResults> Sentence<T>(string query, PagingDTO paging, T obj) where T : class 
         {
             string orderby = " order by 1";
@@ -60,7 +67,13 @@ namespace School_API.Services
 
             return results;
         }
-
+        /// <summary>
+        /// Sirve para retornar datos único de la consulta a realizar.
+        /// </summary>
+        /// <typeparam name="T">Clase de datos a generar</typeparam>
+        /// <param name="query">>Sentencia o instrucciones para generar los datos.</param>
+        /// <param name="parameters">Parametros de la consulta a realizar</param>
+        /// <returns>Datos devueltos de la consulta</returns>
         public async Task<T> SentenceUnique<T>(string query, DynamicParameters parameters) where T : class
         { 
             using (var conn = new SqlConnection(_connectionString))
@@ -71,7 +84,13 @@ namespace School_API.Services
             };
 
         }
-
+        /// <summary>
+        /// Utilizado para buscar si hay una propiedad dentro de la clase
+        /// </summary>
+        /// <typeparam name="T">Clase de datos a buscar</typeparam>
+        /// <param name="FieldName">Nombre del campo a buscar</param>
+        /// <param name="obj">Misma clase donde esta la T generico</param>
+        /// <returns>Devuelve verdadero o falso, si lo encuentra o no, la propiedad</returns>
         private bool HasProperty<T>(string FieldName, T obj) where T : class 
         {
             foreach (var item in obj.GetType().GetProperties())
