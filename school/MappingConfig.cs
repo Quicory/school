@@ -13,6 +13,8 @@ namespace School_API
             CreateMap<ApplicationUser, Token>().ReverseMap();
             CreateMap<ApplicationUser, UserEditDTO>().ReverseMap();
 
+            CreateMap<Subject, SubjectCreateDTO>().ReverseMap();
+
         }
     }
 }

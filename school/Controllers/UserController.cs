@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -12,7 +13,7 @@ namespace School_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
     public class UserController : ControllerBase
     {
         private readonly ApplicationDbContext _context;               
@@ -28,7 +29,7 @@ namespace School_API.Controllers
             _context = context;
         }
         /// <summary>
-        /// Retorna los datos del usuario en paginación.
+        /// Retorna los datos de los usuarios en paginación.
         /// </summary>
         /// <param name="paging">Datos o propiedades para realizar la consulta</param>
         /// <returns>Retorna los datos del usuario, si es exitoso o no.</returns>
@@ -47,7 +48,9 @@ namespace School_API.Controllers
                     FETCH NEXT @PageSize ROWS ONLY;
 
                     SELECT COUNT(*)
-                    FROM AspNetUsers
+                    FROM AspNetUsers U inner join AspNetUserRoles UR
+	                    on U.Id = UR.UserId inner join AspNetRoles R
+		                    on UR.RoleId = R.Id
                     {0};
                     ";
 
