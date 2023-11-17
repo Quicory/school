@@ -5,7 +5,7 @@
 namespace School_Data.Migrations
 {
     /// <inheritdoc />
-    public partial class TablaAsignatura : Migration
+    public partial class EditTableUsers : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -15,7 +15,7 @@ namespace School_Data.Migrations
                 keyColumn: "Id",
                 keyValue: "a18be9c0-aa65-4af8-bd17-00bd9344e575",
                 columns: new[] { "CompleteName", "ConcurrencyStamp", "PasswordHash" },
-                values: new object[] { "Administrator", "5a106a82-c0db-4f34-8e3d-3045f96ccd4e", "AQAAAAIAAYagAAAAEMwmLDz+iWMeW5TGydzoGoCxCaXFhndy01L7MpJm0jZwp53DbnmGE6RfAjVR5fxD+w==" });
+                values: new object[] { "Administrator", "74817f35-d6c4-4abd-9198-ce54772d50d8", "AQAAAAIAAYagAAAAEGs8zV3IvL4vju3EuoewefF0A+HNEaPwSPAUOaaRVxzzZtRbILiO0wxWFPrfLlGD5Q==" });
         }
 
         /// <inheritdoc />

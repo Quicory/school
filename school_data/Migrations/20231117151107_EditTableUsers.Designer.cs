@@ -12,8 +12,8 @@ using School_Data.Models;
 namespace School_Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231117150413_TablaAsignatura")]
-    partial class TablaAsignatura
+    [Migration("20231117151107_EditTableUsers")]
+    partial class EditTableUsers
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -246,13 +246,13 @@ namespace School_Data.Migrations
                             Id = "a18be9c0-aa65-4af8-bd17-00bd9344e575",
                             AccessFailedCount = 0,
                             CompleteName = "Administrator",
-                            ConcurrencyStamp = "5a106a82-c0db-4f34-8e3d-3045f96ccd4e",
+                            ConcurrencyStamp = "74817f35-d6c4-4abd-9198-ce54772d50d8",
                             Email = "admin@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "admin@gmail.com",
                             NormalizedUserName = "Admin",
-                            PasswordHash = "AQAAAAIAAYagAAAAEMwmLDz+iWMeW5TGydzoGoCxCaXFhndy01L7MpJm0jZwp53DbnmGE6RfAjVR5fxD+w==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEGs8zV3IvL4vju3EuoewefF0A+HNEaPwSPAUOaaRVxzzZtRbILiO0wxWFPrfLlGD5Q==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
