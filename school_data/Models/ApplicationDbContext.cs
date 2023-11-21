@@ -53,6 +53,8 @@ namespace School_Data.Models
             // This relationships Teacher and Subjects.
             builder.Entity<TeacherSubject>().HasKey(ts => new { ts.TeacherId, ts.SubjectId });
 
+            // This relationships Teacher and Classroom.
+            builder.Entity<TeacherClassroom>().HasKey(tc => new { tc.TeacherId, tc.ClassroomId });
         }
 
         protected override void ConfigureConventions(ModelConfigurationBuilder builder)
@@ -68,6 +70,7 @@ namespace School_Data.Models
         public DbSet<TeacherSubject> TeachersSubjects { get; set; }
         public DbSet<Student> Students { get; set; }
         public DbSet<Classroom> Classrooms { get; set; }
+        public DbSet<TeacherClassroom> TeachersClassrooms { get; set; }
     }
 
     public class DateOnlyConverter : ValueConverter<DateOnly, DateTime>
