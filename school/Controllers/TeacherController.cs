@@ -3,12 +3,10 @@ using Dapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using School_API.Services;
 using School_Data.DTOs;
 using School_Data.Helpers;
 using School_Data.Models;
-using System;
 using System.Net;
 
 namespace School_API.Controllers

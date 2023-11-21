@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using School_Data.Models;
 
@@ -11,9 +12,11 @@ using School_Data.Models;
 namespace School_Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231121002608_AgregarCamposEstudiantes")]
+    partial class AgregarCamposEstudiantes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -243,13 +246,13 @@ namespace School_Data.Migrations
                             Id = "a18be9c0-aa65-4af8-bd17-00bd9344e575",
                             AccessFailedCount = 0,
                             CompleteName = "Administrator",
-                            ConcurrencyStamp = "1f9ae802-af5e-49cd-b767-6b12edd839b8",
+                            ConcurrencyStamp = "8ba3bfc4-f190-426a-a3df-456c9da90707",
                             Email = "admin@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "admin@gmail.com",
                             NormalizedUserName = "Admin",
-                            PasswordHash = "AQAAAAIAAYagAAAAEDQuj4/RXz5c/MYHTC/Prddp+NWR+nZ6q2A2WRQNvzhZbP9ENRbGyoTXbI8kZ+nlSQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEORMrMrvHt3NUZZH3EYYI+qXbF0K/ylag7h6HgiFL8fegALk2saKZRZ3GoCxJWWuxA==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -257,49 +260,50 @@ namespace School_Data.Migrations
                         });
                 });
 
-            modelBuilder.Entity("School_Data.Models.Student", b =>
+            modelBuilder.Entity("School_Data.Models.StudentDTO", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasAnnotation("Relational:JsonPropertyName", "id");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Address")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(max)")
+                        .HasAnnotation("Relational:JsonPropertyName", "address");
 
-                    b.Property<DateTime>("Birthdate")
-                        .HasColumnType("date");
+                    b.Property<DateTime?>("Birthdate")
+                        .HasColumnType("datetime2")
+                        .HasAnnotation("Relational:JsonPropertyName", "birthdate");
 
                     b.Property<string>("FatherName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(max)")
+                        .HasAnnotation("Relational:JsonPropertyName", "fathername");
 
                     b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("nvarchar(max)")
+                        .HasAnnotation("Relational:JsonPropertyName", "firstname");
 
                     b.Property<string>("IDNumber")
-                        .IsRequired()
-                        .HasMaxLength(12)
-                        .HasColumnType("nvarchar(12)");
+                        .HasColumnType("nvarchar(max)")
+                        .HasAnnotation("Relational:JsonPropertyName", "idnumber");
 
                     b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("nvarchar(max)")
+                        .HasAnnotation("Relational:JsonPropertyName", "lastname");
 
                     b.Property<string>("MotherName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(max)")
+                        .HasAnnotation("Relational:JsonPropertyName", "mothername");
 
                     b.Property<DateTime?>("create_at")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasAnnotation("Relational:JsonPropertyName", "create_at");
 
                     b.Property<DateTime?>("update_at")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasAnnotation("Relational:JsonPropertyName", "update_at");
 
                     b.HasKey("Id");
 

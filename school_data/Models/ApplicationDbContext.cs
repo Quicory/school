@@ -57,9 +57,10 @@ namespace School_Data.Models
 
         protected override void ConfigureConventions(ModelConfigurationBuilder builder)
         {
-            // This is by Birthdate to put DateOnly
+            // This is by Birthdate to put DateOnly            
             builder.Properties<DateOnly>()
-             .HaveConversion<DateOnlyConverter>();
+               .HaveConversion<DateOnlyConverter>()
+               .HaveColumnType("date");
         }
 
         public DbSet<Subject> Subjects { get; set; }

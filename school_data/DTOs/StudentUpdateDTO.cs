@@ -1,14 +1,10 @@
 ﻿
-using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
 namespace School_Data.Models
 {
-    public class Student
+    public class StudentUpdateDTO
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
         [Required(ErrorMessage = "El nombre es requerido")]
         [StringLength(100, ErrorMessage = "El nombre debe tener al menos {0} de longitud.")]
         public string FirstName { get; set; }
@@ -26,7 +22,5 @@ namespace School_Data.Models
         public string MotherName { get; set; }
         [Required(ErrorMessage = "La Dirección es requerida")]
         public string Address { get; set; }
-        public DateTime? create_at { get; set; } = DateTime.Now;
-        public DateTime? update_at { get; set; } = DateTime.Now;
     }
 }
