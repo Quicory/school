@@ -67,6 +67,7 @@ namespace School_Data.Models
         public DbSet<Teacher> Teachers { get; set; }
         public DbSet<TeacherSubject> TeachersSubjects { get; set; }
         public DbSet<Student> Students { get; set; }
+        public DbSet<Classroom> Classrooms { get; set; }
     }
 
     public class DateOnlyConverter : ValueConverter<DateOnly, DateTime>
