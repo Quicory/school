@@ -147,6 +147,18 @@ namespace School_API.Controllers
                 return _resp;
             }
 
+            var obj_search = await _context.Students.FirstOrDefaultAsync(x => x.IDNumber == model.IDNumber);
+            if (obj_search != null)
+            {
+                _resp.IsValid = false;
+                _resp.Message = "La Matrícula del estudiante ya existe.";
+                _resp.StatusCode = HttpStatusCode.Conflict;
+
+                _logger.LogError(_resp.Message);
+
+                return _resp;
+            }
+
             try
             {
                 var obj = new Student();
@@ -196,7 +208,19 @@ namespace School_API.Controllers
                 return _resp;
             }
 
-            var obj_search = await _context.Students.FirstOrDefaultAsync(x => x.Id == Id);
+            var obj_search = await _context.Students.FirstOrDefaultAsync(x => x.IDNumber == model.IDNumber && x.Id != Id);
+            if (obj_search != null)
+            {
+                _resp.IsValid = false;
+                _resp.Message = "La Matrícula del estudiante ya existe.";
+                _resp.StatusCode = HttpStatusCode.Conflict;
+
+                _logger.LogError(_resp.Message);
+
+                return _resp;
+            }
+
+            obj_search = await _context.Students.FirstOrDefaultAsync(x => x.Id == Id);
             if (obj_search == null)
             {
                 _resp.IsValid = false;
