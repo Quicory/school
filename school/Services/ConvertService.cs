@@ -21,7 +21,7 @@ namespace School_API.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
-                return default;
+                return Newtonsoft.Json.JsonConvert.DeserializeObject<List<T>>("[]");
             }
         }
     }
