@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using System.ComponentModel;
 using System.Reflection.Emit;
 
 namespace School_Data.Models
@@ -50,10 +52,27 @@ namespace School_Data.Models
 
             // This relationships Teacher and Subjects.
             builder.Entity<TeacherSubject>().HasKey(ts => new { ts.TeacherId, ts.SubjectId });
+
+        }
+
+        protected override void ConfigureConventions(ModelConfigurationBuilder builder)
+        {
+            // This is by Birthdate to put DateOnly
+            builder.Properties<DateOnly>()
+             .HaveConversion<DateOnlyConverter>();
         }
 
         public DbSet<Subject> Subjects { get; set; }
         public DbSet<Teacher> Teachers { get; set; }
         public DbSet<TeacherSubject> TeachersSubjects { get; set; }
+        public DbSet<Student> Students { get; set; }
+    }
+
+    public class DateOnlyConverter : ValueConverter<DateOnly, DateTime>
+    {
+        public DateOnlyConverter() : base(
+            dateOnly => dateOnly.ToDateTime(TimeOnly.MinValue),
+            dateTime => DateOnly.FromDateTime(dateTime))
+        { }
     }
 }

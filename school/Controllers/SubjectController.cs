@@ -15,7 +15,7 @@ namespace School_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     public class SubjectController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
@@ -222,6 +222,7 @@ namespace School_API.Controllers
         /// <param name="Id">Identificación</param>
         /// <returns>Retorno los datos eliminados, si son correctos.</returns>
         [HttpDelete("id")]
+        [Authorize(Roles = "Admin")]
         public async Task<APIResponse> Delete(int Id)
         {
             if (Id <= 0)

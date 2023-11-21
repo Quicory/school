@@ -32,6 +32,9 @@ namespace School_API.Controllers
         /// <returns>Retorno de datos sobre acceso al API.</returns>
         [HttpPost]
         [Route("login")]
+        //[SwaggerResponse(StatusCodes.Status400BadRequest)]
+        //[SwaggerResponse(StatusCodes.Status500InternalServerError)]
+        //[SwaggerResponse(StatusCodes.Status200OK, Type = typeof(Task<APIResponse>))]
         public async Task<APIResponse> Login(LoginModel model)
         {
             try
