@@ -44,7 +44,18 @@ namespace School_API.Controllers
             _logger.LogInformation("Ejecutando paginación maestros.");
 
             // Search field
-            paging.FilterFieldName = "Name";
+            // Search field
+            if (!(paging.FilterFieldName.ToLower() == "firstname" || paging.FilterFieldName.ToLower() == "lastname"))
+            {
+                _resp.IsValid = false;
+                _resp.Message = "No puede usar campo diferentes a Nombre o Apellido.";
+                _resp.StatusCode = HttpStatusCode.BadRequest;
+
+                _logger.LogError(_resp.Message);
+
+                return _resp;
+            }
+
             var query = @"SELECT *, Subjects = (SELECT S.* FROM Subjects S inner join TeachersSubjects ST 
 						                            on S.Id = ST.SubjectId where ST.TeacherId = T.Id FOR JSON AUTO)
                             FROM Teachers T

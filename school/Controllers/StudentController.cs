@@ -41,7 +41,17 @@ namespace School_API.Controllers
             _logger.LogInformation("Ejecutando paginación estudiantes");
 
             // Search field
-            paging.FilterFieldName = "Name";
+            if(!(paging.FilterFieldName.ToLower() == "firstname" || paging.FilterFieldName.ToLower() == "lastname"))
+            {
+                _resp.IsValid = false;
+                _resp.Message = "No puede usar campo diferentes a Nombre o Apellido.";
+                _resp.StatusCode = HttpStatusCode.BadRequest;
+
+                _logger.LogError(_resp.Message);
+
+                return _resp;
+            }
+
             var query = @"
                     SELECT * FROM Students
                     {0}
