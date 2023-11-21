@@ -12,7 +12,7 @@ namespace School_Data.Models
         [JsonPropertyName("lastname")]
         public string LastName { get; set; }
         [JsonPropertyName("birthdate")]
-        public DateOnly? Birthdate { get; set; }
+        public DateTime? Birthdate { get; set; }
         [JsonPropertyName("idnumber")]
         public string IDNumber { get; set; }
         [JsonPropertyName("fathername")]

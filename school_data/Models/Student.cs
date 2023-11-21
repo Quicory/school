@@ -1,9 +1,11 @@
 ﻿
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
 
 namespace School_Data.Models
 {
+    [Index(nameof(IDNumber), IsUnique = true, Name = "Unique_IDNumber")]
     public class Student
     {
         [Key]
@@ -18,7 +20,7 @@ namespace School_Data.Models
         [Required(ErrorMessage = "La Fecha de Nacimiento es requerida")]
         public DateOnly? Birthdate { get; set; }
         [Required(ErrorMessage = "La Matrícula es requerida")]
-        [StringLength(12, ErrorMessage = "La matrícula debe tener al menos {0} de longitud.")]
+        [StringLength(12, ErrorMessage = "La matrícula debe tener al menos {0} de longitud.")] 
         public string IDNumber { get; set; }
         [Required(ErrorMessage = "El Nombre del Padre es requerido")]
         public string FatherName { get; set; }

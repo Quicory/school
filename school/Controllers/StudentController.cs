@@ -210,6 +210,7 @@ namespace School_API.Controllers
 
             try
             {
+                obj_search = _mapper.Map(model, obj_search);
                 obj_search.update_at = DateTime.Now;
 
                 _context.Students.Update(obj_search);
@@ -239,7 +240,7 @@ namespace School_API.Controllers
         /// <param name="Id">Identificación</param>
         /// <returns>Retorno los datos eliminados, si son correctos.</returns>
         [HttpDelete("id")]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         public async Task<APIResponse> Delete(int Id)
         {
             _logger.LogInformation("Eliminando estudiante.");
