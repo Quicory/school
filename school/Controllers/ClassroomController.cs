@@ -13,15 +13,15 @@ namespace School_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
-    public class StudentController : ControllerBase
+    //[Authorize]
+    public class ClassroomController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
         private readonly ILogger<UserController> _logger;
         protected APIResponse _resp;
         private readonly IPagedService _paged;
         private readonly IMapper _mapper;
-        public StudentController(ILogger<UserController> logger, IPagedService paged, ApplicationDbContext context, IMapper mapper)
+        public ClassroomController(ILogger<UserController> logger, IPagedService paged, ApplicationDbContext context, IMapper mapper)
         {
             _logger = logger;
             _resp = new();
@@ -31,31 +31,31 @@ namespace School_API.Controllers
         }
 
         /// <summary>
-        /// Retorna los datos de los estadiantes en paginación.
+        /// Retorna los datos de las aulas en paginación.
         /// </summary>
         /// <param name="paging">Datos o propiedades para realizar la consulta</param>
-        /// <returns>Retorna los datos de los estadiantes, si es exitoso o no.</returns>
+        /// <returns>Retorna los datos de las aulas, si es exitoso o no.</returns>
         [HttpGet]
         public async Task<APIResponse> Get([FromQuery] PagingDTO paging)
         {
-            _logger.LogInformation("Ejecutando paginación estudiantes");
+            _logger.LogInformation("Ejecutando paginación aulas");
 
             // Search field
             paging.FilterFieldName = "Name";
             var query = @"
-                    SELECT * FROM Students
+                    SELECT * FROM Classrooms
                     {0}
                     {1}
                     OFFSET @Offset ROWS
                     FETCH NEXT @PageSize ROWS ONLY;
 
                     SELECT COUNT(*)
-                    FROM Students
+                    FROM Classrooms
                     {0};
                     ";
 
-            var obj = new StudentDTO();
-            var result = await _paged.Sentence<StudentDTO>(query, paging, obj);
+            var obj = new ClassroomDTO();
+            var result = await _paged.Sentence<ClassroomDTO>(query, paging, obj);
 
             if (result == null)
             {
@@ -79,14 +79,14 @@ namespace School_API.Controllers
         }
 
         /// <summary>
-        /// Retorna los datos del estudiante único
+        /// Retorna los datos del aula único
         /// </summary>
-        /// <param name="Id">Identificación del estudiante</param>
-        /// <returns>Retorna los datos del estudiante, si es exitoso o no.</returns>
+        /// <param name="Id">Identificación del aula</param>
+        /// <returns>Retorna los datos del aula, si es exitoso o no.</returns>
         [HttpGet("id:int")]
         public async Task<APIResponse> Get(int Id)
         {
-            _logger.LogInformation("Ejecutando estudiante por ID.");
+            _logger.LogInformation("Ejecutando aula por ID.");
 
             if (Id <= 0)
             {
@@ -101,10 +101,10 @@ namespace School_API.Controllers
             }
 
             var parameters = new DynamicParameters();
-            var query = @"SELECT * FROM Students where Id = @Id";
+            var query = @"SELECT * FROM Classrooms where Id = @Id";
 
             parameters.Add("@Id", Id);
-            var result = await _paged.SentenceUnique<StudentDTO>(query, parameters);
+            var result = await _paged.SentenceUnique<ClassroomDTO>(query, parameters);
 
             if (result == null)
             {
@@ -126,14 +126,14 @@ namespace School_API.Controllers
             return _resp;
         }
         /// <summary>
-        /// Crear un estudiante
+        /// Crear una aula
         /// </summary>
-        /// <param name="model">Datos del estudiante</param>
-        /// <returns>Retorno los datos del estudiante</returns>
+        /// <param name="model">Datos del aula</param>
+        /// <returns>Retorno los datos del aula</returns>
         [HttpPost]
-        public async Task<APIResponse> Create([FromBody] StudentCreateDTO model)
+        public async Task<APIResponse> Create([FromBody] ClassroomCreateDTO model)
         {
-            _logger.LogInformation("Creando estudiante.");
+            _logger.LogInformation("Creando aula.");
 
             if (!ModelState.IsValid || model == null)
             {
@@ -147,28 +147,16 @@ namespace School_API.Controllers
                 return _resp;
             }
 
-            var obj_search = await _context.Students.FirstOrDefaultAsync(x => x.IDNumber == model.IDNumber);
-            if (obj_search != null)
-            {
-                _resp.IsValid = false;
-                _resp.Message = "La Matrícula del estudiante ya existe.";
-                _resp.StatusCode = HttpStatusCode.Conflict;
-
-                _logger.LogError(_resp.Message);
-
-                return _resp;
-            }
-
             try
             {
-                var obj = new Student();
-                obj = _mapper.Map<Student>(model);
+                var obj = new Classroom();
+                obj = _mapper.Map<Classroom>(model);
 
-                _context.Students.Add(obj);
+                _context.Classrooms.Add(obj);
 
                 await _context.SaveChangesAsync();
 
-                _resp.Message = "Estudiante creada.";
+                _resp.Message = "Aula creada.";
                 _resp.Result = obj;
                 _resp.StatusCode = HttpStatusCode.Created;
 
@@ -186,15 +174,15 @@ namespace School_API.Controllers
             }
         }
         /// <summary>
-        /// Actualizar el estudiante.
+        /// Actualizar el aula.
         /// </summary>
         /// <param name="Id">Identificación</param>
         /// <param name="model">Datos a modificar</param>
         /// <returns>Retorno los datos modificados, si son correctos.</returns>
         [HttpPut("id")]
-        public async Task<APIResponse> Update(int Id, [FromBody] StudentCreateDTO model)
+        public async Task<APIResponse> Update(int Id, [FromBody] ClassroomUpdateDTO model)
         {
-            _logger.LogInformation("Actualizando estudiante.");
+            _logger.LogInformation("Actualizando aula.");
 
             if (!ModelState.IsValid || model == null)
             {
@@ -207,24 +195,12 @@ namespace School_API.Controllers
 
                 return _resp;
             }
-
-            var obj_search = await _context.Students.FirstOrDefaultAsync(x => x.IDNumber == model.IDNumber && x.Id != Id);
-            if (obj_search != null)
-            {
-                _resp.IsValid = false;
-                _resp.Message = "La Matrícula del estudiante ya existe.";
-                _resp.StatusCode = HttpStatusCode.Conflict;
-
-                _logger.LogError(_resp.Message);
-
-                return _resp;
-            }
-
-            obj_search = await _context.Students.FirstOrDefaultAsync(x => x.Id == Id);
+            
+            var obj_search = await _context.Classrooms.FirstOrDefaultAsync(x => x.Id == Id);
             if (obj_search == null)
             {
                 _resp.IsValid = false;
-                _resp.Message = "No se ha encontrado el estudiante.";
+                _resp.Message = "No se ha encontrado el aula.";
                 _resp.StatusCode = HttpStatusCode.NotFound;
 
                 _logger.LogError(_resp.Message);
@@ -237,11 +213,11 @@ namespace School_API.Controllers
                 obj_search = _mapper.Map(model, obj_search);
                 obj_search.update_at = DateTime.Now;
 
-                _context.Students.Update(obj_search);
+                _context.Classrooms.Update(obj_search);
 
                 await _context.SaveChangesAsync();
 
-                _resp.Message = "Estudiante actualizado.";
+                _resp.Message = "Aula actualizado.";
                 _resp.Result = obj_search;
                 _resp.StatusCode = HttpStatusCode.OK;
 
@@ -259,7 +235,7 @@ namespace School_API.Controllers
             }
         }
         /// <summary>
-        /// Eliminación del estudiante.
+        /// Eliminación del aula.
         /// </summary>
         /// <param name="Id">Identificación</param>
         /// <returns>Retorno los datos eliminados, si son correctos.</returns>
@@ -267,7 +243,7 @@ namespace School_API.Controllers
         //[Authorize(Roles = "Admin")]
         public async Task<APIResponse> Delete(int Id)
         {
-            _logger.LogInformation("Eliminando estudiante.");
+            _logger.LogInformation("Eliminando aula.");
 
             if (Id <= 0)
             {
@@ -280,11 +256,11 @@ namespace School_API.Controllers
                 return _resp;
             }
 
-            var subject = await _context.Students.FirstOrDefaultAsync(x => x.Id == Id);
+            var subject = await _context.Classrooms.FirstOrDefaultAsync(x => x.Id == Id);
             if (subject == null)
             {
                 _resp.IsValid = false;
-                _resp.Message = "No se ha encontrado el estudiante.";
+                _resp.Message = "No se ha encontrado el aula.";
                 _resp.StatusCode = HttpStatusCode.NotFound;
 
                 _logger.LogError(_resp.Message);
@@ -294,11 +270,11 @@ namespace School_API.Controllers
 
             try
             {
-                _context.Students.Remove(subject);
+                _context.Classrooms.Remove(subject);
 
                 await _context.SaveChangesAsync();
 
-                _resp.Message = "Estudiante eliminado.";
+                _resp.Message = "Aula eliminado.";
                 _resp.Result = subject;
                 _resp.StatusCode = HttpStatusCode.OK;
 
