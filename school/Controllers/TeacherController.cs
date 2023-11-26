@@ -115,7 +115,7 @@ namespace School_API.Controllers
         /// </summary>
         /// <param name="Id">Identificación del maestro</param>
         /// <returns>Retorna los datos del maestro, si es exitoso o no.</returns>
-        [HttpGet("id:int")]
+        [HttpGet("{id:int}")]
         [ActionName("TeacherID")]
         public async Task<APIResponse> Get(int Id)
         {
@@ -432,7 +432,7 @@ namespace School_API.Controllers
         /// </summary>
         /// <param name="Id">Identificación del maestro</param>
         /// <returns>Retorna los datos del maestro con sus asignaciones, si es exitoso o no.</returns>
-        [HttpGet("GetTeacherClassrooms/id:int")]
+        [HttpGet("GetTeacherClassrooms/{id:int}")]
         public async Task<APIResponse> GetTeacherClassrooms(int Id)
         {
             _logger.LogInformation("Ejecutando maestros con aulas por ID.");
@@ -486,7 +486,7 @@ namespace School_API.Controllers
         }
 
 
-        [HttpPost("AssignClassroom/id:int")]
+        [HttpPost("AssignClassroom/{id:int}")]
         public async Task<APIResponse> AssignClassroom(int Id, [FromBody] TeacherClassroomCreateDTO model)
         {
             _logger.LogInformation("Asignación de Maestros a Aulas.");

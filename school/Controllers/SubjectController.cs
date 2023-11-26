@@ -77,7 +77,7 @@ namespace School_API.Controllers
         /// </summary>
         /// <param name="Id">Identificación de la asignatura</param>
         /// <returns>Retorna los datos de la asignatura, si es exitoso o no.</returns>
-        [HttpGet("id:int")]
+        [HttpGet("{id:int}")]
         public async Task<APIResponse> Get(int Id)
         {
             if (Id <= 0)
