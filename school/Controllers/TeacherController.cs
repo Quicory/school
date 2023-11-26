@@ -3,6 +3,7 @@ using Dapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using School_API.Services;
 using School_Data.DTOs;
 using School_Data.Helpers;
@@ -13,7 +14,7 @@ namespace School_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class TeacherController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
@@ -44,8 +45,11 @@ namespace School_API.Controllers
             _logger.LogInformation("Ejecutando paginación maestros.");
 
             // Search field
-            // Search field
-            if (!(paging.FilterFieldName.ToLower() == "firstname" || paging.FilterFieldName.ToLower() == "lastname"))
+            if (paging.FilterFieldName.IsNullOrEmpty())
+            {
+                paging.FilterFieldName = "firstname";
+            } 
+            else if (!(paging.FilterFieldName.ToLower() == "firstname" || paging.FilterFieldName.ToLower() == "lastname"))
             {
                 _resp.IsValid = false;
                 _resp.Message = "No puede usar campo diferentes a Nombre o Apellido.";
