@@ -107,8 +107,9 @@ namespace School_API.Services
             }
             // string token = GenerateToken(authClaims);
 
-            Token token = _mapper.Map<Token>(user);
+            Token token = _mapper.Map<Token>(user);            
             token.token = GenerateToken(authClaims);
+            token.Roles = (List<string>)userRoles;
 
             _resp.Message = "Bienvenido: " + token.CompleteName;
             _resp.StatusCode = HttpStatusCode.OK;
