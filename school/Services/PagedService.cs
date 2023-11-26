@@ -28,6 +28,7 @@ namespace School_API.Services
         /// <returns>Datos devueltos de la consulta y el total</returns>
         public async Task<PagedResults> Sentence<T>(string query, PagingDTO paging, T obj) where T : class 
         {
+            
             string orderby = " order by 1";
             if (!paging.FieldOrder.IsNullOrEmpty())
             {
@@ -42,10 +43,19 @@ namespace School_API.Services
             string where = "";
             if (!paging.Filter.IsNullOrEmpty())
             {
-                if (HasProperty(paging.FilterFieldName, obj))
-                {
-                    parameters.Add("@" + paging.FilterFieldName, "%" + paging.Filter + "%" );
-                    where = " where " + paging.FilterFieldName + " Like @" + paging.FilterFieldName;
+                string[] field = paging.FilterFieldName.Split(",");
+                
+                foreach (var item in field)
+                {                    
+                    if (HasProperty(item, obj))
+                    {
+                        parameters.Add("@" + item, "%" + paging.Filter + "%");
+                        if(where.IsNullOrEmpty())
+                            where = " where " + item + " Like @" + item;
+                        else
+                            where += " or " + item + " Like @" + item;
+
+                    }
                 }
             }
 
