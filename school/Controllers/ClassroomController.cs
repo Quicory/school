@@ -83,7 +83,7 @@ namespace School_API.Controllers
         /// </summary>
         /// <param name="Id">Identificación del aula</param>
         /// <returns>Retorna los datos del aula, si es exitoso o no.</returns>
-        [HttpGet("id:int")]
+        [HttpGet("{id:int}")]
         public async Task<APIResponse> Get(int Id)
         {
             _logger.LogInformation("Ejecutando aula por ID.");
@@ -179,7 +179,7 @@ namespace School_API.Controllers
         /// <param name="Id">Identificación</param>
         /// <param name="model">Datos a modificar</param>
         /// <returns>Retorno los datos modificados, si son correctos.</returns>
-        [HttpPut("id")]
+        [HttpPut("{id:int}")]
         public async Task<APIResponse> Update(int Id, [FromBody] ClassroomUpdateDTO model)
         {
             _logger.LogInformation("Actualizando aula.");
@@ -239,7 +239,7 @@ namespace School_API.Controllers
         /// </summary>
         /// <param name="Id">Identificación</param>
         /// <returns>Retorno los datos eliminados, si son correctos.</returns>
-        [HttpDelete("id")]
+        [HttpDelete("{id:int}")]
         //[Authorize(Roles = "Admin")]
         public async Task<APIResponse> Delete(int Id)
         {

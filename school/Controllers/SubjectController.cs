@@ -160,10 +160,10 @@ namespace School_API.Controllers
         /// <summary>
         /// Actualizar la asignatura.
         /// </summary>
-        /// <param name="Id">Identificación</param>
+        /// <param name="{id:int}">Identificación</param>
         /// <param name="model">Datos a modificar</param>
         /// <returns>Retorno los datos modificados, si son correctos.</returns>
-        [HttpPut("id")]
+        [HttpPut("{id:int}")]
         public async Task<APIResponse> Update(int Id, [FromBody] SubjectCreateDTO model)
         {
             if (!ModelState.IsValid || model == null)
@@ -221,7 +221,7 @@ namespace School_API.Controllers
         /// </summary>
         /// <param name="Id">Identificación</param>
         /// <returns>Retorno los datos eliminados, si son correctos.</returns>
-        [HttpDelete("id")]
+        [HttpDelete("{id:int}")]
         [Authorize(Roles = "Admin")]
         public async Task<APIResponse> Delete(int Id)
         {
