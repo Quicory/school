@@ -160,11 +160,11 @@ namespace School_API.Controllers
             {
                 await _context.SaveChangesAsync();
 
-                if (!await roleManager.RoleExistsAsync(model.Role))
-                    await roleManager.CreateAsync(new IdentityRole(model.Role));
+                //if (!await roleManager.RoleExistsAsync(model.Role))
+                //    await roleManager.CreateAsync(new IdentityRole(model.Role));
 
-                if (await roleManager.RoleExistsAsync(model.Role))
-                    await userManager.AddToRoleAsync(user, model.Role);
+                //if (await roleManager.RoleExistsAsync(model.Role))
+                //    await userManager.AddToRoleAsync(user, model.Role);
 
                 //var userRol = await userManager.FindByIdAsync(model.Id);
                 //if (userRol != null)

@@ -88,11 +88,7 @@ namespace School_API.Controllers
                 }
 
                  _resp = await _authService.Registeration(model, model.Role);
-                //if (status == 0)
-                //{
-                //    return BadRequest(message);
-                //}
-                //return CreatedAtAction(nameof(Register), model);
+               
                 _logger.LogInformation("Enviando respuesta desde Register.");
                 return _resp;
 
