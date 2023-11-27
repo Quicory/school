@@ -14,4 +14,5 @@ SQL Server 2016
 2. Compile the project.
 3. Create the Database: Tools => NutGet Package Manager => Package Manager Console. Ex.
    ![plot](./Console.png)
-4. Execute Update-Database 
+4. Execute Update-Database. Ex.
+   ![plot](./Update-Database.png)
