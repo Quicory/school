@@ -101,7 +101,7 @@ namespace School_API.Controllers
         /// </summary>
         /// <param name="Id">Identificación del estudiante</param>
         /// <returns>Retorna los datos del estudiante, si es exitoso o no.</returns>
-        [HttpGet("id:int")]
+        [HttpGet("{id:int}")]
         public async Task<APIResponse> Get(int Id)
         {
             _logger.LogInformation("Ejecutando estudiante por ID.");

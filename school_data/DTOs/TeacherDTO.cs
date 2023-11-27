@@ -18,6 +18,9 @@ namespace School_Data.DTOs
         public string Email { get; set; }
         [JsonPropertyName("profession")]
         public string Profession { get; set; }
+        public DateTime? create_at { get; set; }
+        public DateTime? update_at { get; set; }
+
         [JsonPropertyName("subjects")]
         public string Subjects { get; set; }
     }

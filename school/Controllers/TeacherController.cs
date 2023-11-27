@@ -97,6 +97,8 @@ namespace School_API.Controllers
                                    lastname = l.LastName,
                                    email = l.Email,
                                    profession = l.Profession,
+                                   create_at = l.create_at,
+                                   update_at = l.update_at,
                                    subjects = _convert.StringToJson<SubjectDTO>(l.Subjects)
                                }).ToList();
 
@@ -158,6 +160,8 @@ namespace School_API.Controllers
                     lastname = result.LastName,
                     email = result.Email,
                     profession = result.Profession,
+                    create_at = result.create_at,
+                    update_at = result.update_at,
                     subjects = _convert.StringToJson<SubjectDTO>(result.Subjects)
                 };
                 _resp.Message = "Consulta realizada exitosamente.";
@@ -225,6 +229,8 @@ namespace School_API.Controllers
                                     lastname = obj.LastName,
                                     email = obj.Email,
                                     profession = obj.Profession,
+                                    create_at = obj.create_at,
+                                    update_at = obj.update_at,
                                     subjects = (from s in _context.Subjects
                                                 join ts in _context.TeachersSubjects
                                                      on s.Id equals ts.SubjectId
@@ -322,6 +328,8 @@ namespace School_API.Controllers
                         lastname = obj_search.LastName,
                         email = obj_search.Email,
                         profession = obj_search.Profession,
+                        create_at = obj_search.create_at,
+                        update_at = obj_search.update_at,
                         subjects = (from s in _context.Subjects
                                     join ts in _context.TeachersSubjects
                                          on s.Id equals ts.SubjectId
@@ -403,6 +411,8 @@ namespace School_API.Controllers
                         lastname = obj_search.LastName,
                         email = obj_search.Email,
                         profession = obj_search.Profession,
+                        create_at = obj_search.create_at,
+                        update_at = obj_search.update_at,
                         subjects = (from s in _context.Subjects
                                     join ts in _context.TeachersSubjects
                                          on s.Id equals ts.SubjectId
@@ -571,6 +581,8 @@ namespace School_API.Controllers
                         lastname = obj_search.LastName,
                         email = obj_search.Email,
                         profession = obj_search.Profession,
+                        create_at = obj_search.create_at,
+                        update_at = obj_search.update_at,
                         classroom = (from c in _context.Classrooms
                                     join tc in _context.TeachersClassrooms
                                          on c.Id equals tc.ClassroomId
