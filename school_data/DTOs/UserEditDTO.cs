@@ -13,5 +13,8 @@ namespace School_Data.DTOs
         public string Email { get; set; }
         [Required(ErrorMessage = "Nombre Completo es requerido")]
         public string CompleteName { get; set; }
+
+        [Required(ErrorMessage = "Rol es requerido")]
+        public string Role { get; set; }
     }
 }

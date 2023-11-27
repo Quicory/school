@@ -1,28 +1,34 @@
 ﻿using Dapper;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.IdentityModel.Tokens;
 using School_API.Services;
 using School_Data.DTOs;
 using School_Data.Helpers;
 using School_Data.Models;
+using System.Data;
 using System.Net;
 
 namespace School_API.Controllers
 {
     [Route("api/[controller]")]    
     [ApiController]
-    [Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "Admin")]
     [Produces("application/json")]
     public class UserController : ControllerBase
     {
+        private readonly UserManager<ApplicationUser> userManager;
+        private readonly RoleManager<IdentityRole> roleManager;
         private readonly ApplicationDbContext _context;               
         private readonly ILogger<UserController> _logger;
         protected APIResponse _resp;
         private readonly IPagedService _paged;
                 
-        public UserController(ILogger<UserController> logger, IPagedService paged, ApplicationDbContext context)
+        public UserController(ILogger<UserController> logger, IPagedService paged, ApplicationDbContext context,
+                UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             _logger = logger;
             _resp = new();
@@ -38,11 +44,10 @@ namespace School_API.Controllers
         public async Task<APIResponse> Get([FromQuery] PagingDTO paging)
         {
             // Search field
-            paging.FilterFieldName = "CompleteName";
+            paging.FilterFieldName = "CompleteName";            
             var query = @"
-                    SELECT U.*, R.Name as RolName FROM AspNetUsers U inner join AspNetUserRoles UR
-	                    on U.Id = UR.UserId inner join AspNetRoles R
-		                    on UR.RoleId = R.Id
+                    SELECT U.id, U.CompleteName, U.UserName, U.Email, R.Name as RolName FROM AspNetUsers U inner join AspNetUserRoles UR
+	                    on U.Id = UR.UserId inner join AspNetRoles R on UR.RoleId = R.Id
                     {0}
                     {1}
                     OFFSET @Offset ROWS
@@ -50,8 +55,7 @@ namespace School_API.Controllers
 
                     SELECT COUNT(*)
                     FROM AspNetUsers U inner join AspNetUserRoles UR
-	                    on U.Id = UR.UserId inner join AspNetRoles R
-		                    on UR.RoleId = R.Id
+	                    on U.Id = UR.UserId inner join AspNetRoles R on UR.RoleId = R.Id
                     {0};
                     ";
 
@@ -92,12 +96,12 @@ namespace School_API.Controllers
             }
 
             var parameters = new DynamicParameters();
-            var query = @"SELECT U.*, R.Name as RolName FROM AspNetUsers U inner join AspNetUserRoles UR
+            var query = @"SELECT U.id, U.CompleteName, U.UserName, U.Email, R.Name as RolName FROM AspNetUsers U inner join AspNetUserRoles UR
 	                        on U.Id = UR.UserId inner join AspNetRoles R
 		                        on UR.RoleId = R.Id where U.Id = @Id";
 
             parameters.Add("@Id", Id);            
-            var result = await _paged.SentenceUnique<ApplicationUser>(query, parameters);
+            var result = await _paged.SentenceUnique<ApplicationUserDTO>(query, parameters);
 
             if (result == null)
             {
@@ -140,7 +144,6 @@ namespace School_API.Controllers
             }
 
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == model.Id);
-
             if (user == null)
             {
                 _resp.IsValid = false;
@@ -156,6 +159,48 @@ namespace School_API.Controllers
             try
             {
                 await _context.SaveChangesAsync();
+
+                if (!await roleManager.RoleExistsAsync(model.Role))
+                    await roleManager.CreateAsync(new IdentityRole(model.Role));
+
+                if (await roleManager.RoleExistsAsync(model.Role))
+                    await userManager.AddToRoleAsync(user, model.Role);
+
+                //var userRol = await userManager.FindByIdAsync(model.Id);
+                //if (userRol != null)
+                //{
+                //    await userManager.AddToRoleAsync(user, model.Role);
+                //    //if (!result.Succeeded)
+                //    //    Errors(result);
+                //}
+
+                //Microsoft.EntityFrameworkCore.ChangeTracking.EntityEntry<IdentityUserRole<string>> entityEntry = _context.UserRoles.Remove(model.Id);
+                //_context.SaveChanges();
+                //userIdData.RoleId = aspnetroleId.Single();
+                //userIdData.UserId = userId;
+                //_context.UserRoles.Add(userIdData);
+                //_context.SaveChanges();
+
+                //var user_role = _context.UserRoles.FirstOrDefaultAsync(r => r.UserId==user.Id);
+                //if (user_role != null)
+                //{
+                //    user_role. .RoleId = 
+                //}
+                //roleManager
+                //await _context.UserRoles.FirstOrDefaultAsync(user.Id);
+
+                //await userManager.Users.FirstOrDefaultAsync((model.Id);
+
+                //var oldUser = await userManager.Users.FirstOrDefaultAsync(model.Id);
+                //var oldRoleId = oldUser.Roles.SingleOrDefault().RoleId;
+                //var oldRoleName = DB.Roles.SingleOrDefault(r => r.Id == oldRoleId).Name;
+
+                //if (oldRoleName != role)
+                //{
+                //    Manager.RemoveFromRole(user.Id, oldRoleName);
+                //    Manager.AddToRole(user.Id, role);
+                //}
+
             }
             catch (Exception ex)
             {

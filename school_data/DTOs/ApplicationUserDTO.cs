@@ -10,7 +10,7 @@ namespace School_Data.DTOs
 {
     public class ApplicationUserDTO : ApplicationUser
     {
-        [JsonPropertyName("RolName")]
+        [JsonPropertyName("Role")]
         public string RolName { get; set; }
     }
 }

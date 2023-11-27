@@ -56,7 +56,7 @@ namespace School_API.Services
             if (!createUserResult.Succeeded)
             {
                 _resp.IsValid = false;
-                _resp.Message = "¡Error al crear usuario! Por favor verifique los detalles del usuario e inténtelo nuevamente.";
+                _resp.Message = "¡Error al crear usuario! Por favor verifique los detalles de la contraseña (Compleja) e inténtelo nuevamente.";
                 _resp.StatusCode = HttpStatusCode.BadRequest;
                 return _resp;
             }
@@ -116,6 +116,41 @@ namespace School_API.Services
             _resp.Result = token;
             return _resp;
         }
+
+        public async Task<APIResponse> ChangePassword(UserChangePasswordDTO model)
+        {
+            var user = await userManager.FindByNameAsync(model.Username);
+            if (user == null)
+            {
+                _resp.IsValid = false;
+                _resp.Message = "Nombre de usuario no válido";
+                _resp.StatusCode = HttpStatusCode.NotFound;
+                return _resp;
+            }
+
+            if (!await userManager.CheckPasswordAsync(user, model.Password))
+            {
+                _resp.IsValid = false;
+                _resp.Message = "Contraseña invalida";
+                _resp.StatusCode = HttpStatusCode.NonAuthoritativeInformation;
+                return _resp;
+            }
+
+            user.PasswordHash = userManager.PasswordHasher.HashPassword(user, model.PasswordNew);
+            var result = await userManager.UpdateAsync(user);
+            if (!result.Succeeded)
+            {
+                _resp.IsValid = false;
+                _resp.Message = "Error creando la nueva contraseña.";
+                _resp.StatusCode = HttpStatusCode.Conflict;
+                return _resp;
+            }
+
+            _resp.Message = "Contraseña cambiada.";
+
+            return _resp;
+        }
+
         /// <summary>
         /// Sirve para generar el token de acceso.
         /// </summary>

@@ -20,5 +20,8 @@ namespace School_Data.Models
 
         [Required(ErrorMessage = "Contraseña es requerida")]
         public string Password { get; set; }
+
+        [Required(ErrorMessage = "Role es requerida")]
+        public string Role { get; set; }
     }
 }

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using School_API.Services;
+using School_Data.DTOs;
 using School_Data.Helpers;
 using School_Data.Models;
 using System.Net;
@@ -86,7 +87,7 @@ namespace School_API.Controllers
                     return _resp;
                 }
 
-                 _resp = await _authService.Registeration(model, UserRoles.Admin);
+                 _resp = await _authService.Registeration(model, model.Role);
                 //if (status == 0)
                 //{
                 //    return BadRequest(message);
@@ -95,6 +96,41 @@ namespace School_API.Controllers
                 _logger.LogInformation("Enviando respuesta desde Register.");
                 return _resp;
 
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                _resp.IsValid = false;
+                _resp.Message = "Error interno sistema.";
+                _resp.StatusCode = (HttpStatusCode)StatusCodes.Status500InternalServerError;
+                _resp.ErrorMessages = new List<string> { ex.Message };
+                return _resp;
+            }
+        }
+        /// <summary>
+        /// Cambiar su contraseña
+        /// </summary>
+        /// <param name="model">Datos para cambiar</param>
+        /// <returns>Respuesta sobre datos que son aceptados o rechazados</returns>
+        [HttpPost]
+        [Route("ChangePassword")]
+        public async Task<APIResponse> ChangePassword(UserChangePasswordDTO model)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    _logger.LogError("Error en algunos campos.");
+
+                    _resp.IsValid = false;
+                    _resp.Message = "Error en algunos campos.";
+                    _resp.StatusCode = HttpStatusCode.BadRequest;
+                    return _resp;
+                }
+
+                _resp = await _authService.ChangePassword(model);
+
+                return _resp;
             }
             catch (Exception ex)
             {
