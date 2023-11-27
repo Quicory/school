@@ -12,6 +12,7 @@ using System.Net;
 namespace School_API.Controllers
 {
     [Route("api/[controller]")]
+    [Produces("application/json")]
     [ApiController]
     [Authorize(Roles = "Admin")]
     public class UserController : ControllerBase

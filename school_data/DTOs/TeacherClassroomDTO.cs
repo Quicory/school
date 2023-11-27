@@ -15,6 +15,10 @@ namespace School_Data.Models
         public string Email { get; set; }
         [JsonPropertyName("profession")]
         public string Profession { get; set; }
+        [JsonPropertyName("create_at")]
+        public DateTime? create_at { get; set; }
+        [JsonPropertyName("update_at")]
+        public DateTime? update_at { get; set; }
         [JsonPropertyName("classrooms")]
         public string Classrooms { get; set; }        
     }

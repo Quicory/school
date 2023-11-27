@@ -13,6 +13,7 @@ namespace School_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Produces("application/json")]
     //[Authorize]
     public class ClassroomController : ControllerBase
     {
