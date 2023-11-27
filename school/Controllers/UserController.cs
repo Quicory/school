@@ -11,10 +11,10 @@ using System.Net;
 
 namespace School_API.Controllers
 {
-    [Route("api/[controller]")]
-    [Produces("application/json")]
+    [Route("api/[controller]")]    
     [ApiController]
     [Authorize(Roles = "Admin")]
+    [Produces("application/json")]
     public class UserController : ControllerBase
     {
         private readonly ApplicationDbContext _context;               

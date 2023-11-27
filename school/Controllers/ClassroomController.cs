@@ -13,8 +13,9 @@ namespace School_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     [Produces("application/json")]
-    //[Authorize]
+    
     public class ClassroomController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
